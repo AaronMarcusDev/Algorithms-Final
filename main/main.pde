@@ -3,6 +3,8 @@ Terrain terrain;
 BG bg;
 Gun gun;
 ColorSet colorset;
+Menu menu;
+boolean showMenu;
 
 void setup() {
   size(800, 600, P3D);
@@ -10,14 +12,16 @@ void setup() {
   bg = new BG();
   flock = new ArrayList<Bird>();
   colorset = new ColorSet();
+  menu = new Menu();
+  showMenu = false;
 
   for (int i = 0; i < 5; i++) {
     // Spawning birds across X, Y, and Z axes
     flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
   }
 
-//   gun = new Gun(width / 2 + 40, height / 2 +10, 450, 20, 4, 20);
-//   //                                   ^-- Z at 500 so it is in front of the camera, 0 seems to center it
+  //   gun = new Gun(width / 2 + 40, height / 2 +10, 450, 20, 4, 20);
+  //   //                                   ^-- Z at 500 so it is in front of the camera, 0 seems to center it
 }
 
 void draw() {
@@ -31,22 +35,30 @@ void draw() {
   lights();
 
   if (keyPressed) {
-	if (key == 'g') {
-		// terrain = new Terrain(3000, 1500, 20);
-		terrain.generate();
-	} else if (key == 'r') {
-		flock.clear();
-	}
-}
+    if (key == 'm') {
+      showMenu = !showMenu;
+	  delay(80); // so that it has a bit of time; 
+	  // otherwise it will close too quickly again since it still registers a key press;
+    } else if (key == 'g') {
+      // terrain = new Terrain(3000, 1500, 20);
+      terrain.generate();
+    } else if (key == 'r') {
+      flock.clear();
+    }
+  }
 
-terrain.display();
+  terrain.display();
 
 
   for (Bird bird : flock) {
     bird.run(flock);
   }
 
-//   gun.display();
+  //   gun.display();
+
+  if (showMenu) {
+    menu.show();
+  }
 }
 
 void mouseClicked() {
