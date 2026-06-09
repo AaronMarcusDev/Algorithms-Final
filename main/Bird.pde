@@ -36,7 +36,7 @@ class Bird {
     PVector coh = cohesion(birds);   
     
     // Weight parameters
-    sep.mult(1.9);
+    sep.mult(2);
     ali.mult(0.5);
     coh.mult(1.0);
     
