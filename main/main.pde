@@ -1,20 +1,23 @@
 ArrayList<Bird> flock;
 Terrain terrain;
 BG bg;
-
-color purple = color(45, 25, 80);
-color orange  = color(235, 110, 85);
+Gun gun;
+ColorSet colorset;
 
 void setup() {
   size(800, 600, P3D);
   terrain = new Terrain(3000, 1500, 20);
   bg = new BG();
   flock = new ArrayList<Bird>();
+  colorset = new ColorSet();
 
-  for (int i = 0; i < 25; i++) {
+  for (int i = 0; i < 5; i++) {
     // Spawning birds across X, Y, and Z axes
-    flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200)));
+    flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
   }
+
+//   gun = new Gun(width / 2 + 40, height / 2 +10, 450, 20, 4, 20);
+//   //                                   ^-- Z at 500 so it is in front of the camera, 0 seems to center it
 }
 
 void draw() {
@@ -22,16 +25,31 @@ void draw() {
   hint(DISABLE_DEPTH_TEST); // Stops 3D depth interference --> https://processing.org/reference/hint_.html
   noStroke();               // Don't want shape borders
 
-  bg.gradientRect(0, 0, width, height, purple, orange); // gradient background
-  
-  hint(ENABLE_DEPTH_TEST); 
+  bg.gradientRect(0, 0, width, height, colorset.purple, colorset.orange); // gradient background
+
+  hint(ENABLE_DEPTH_TEST);
   lights();
 
-  terrain.display();
+  if (keyPressed) {
+	if (key == 'g') {
+		// terrain = new Terrain(3000, 1500, 20);
+		terrain.generate();
+	} else if (key == 'r') {
+		flock.clear();
+	}
+}
+
+terrain.display();
+
 
   for (Bird bird : flock) {
     bird.run(flock);
   }
+
+//   gun.display();
 }
 
+void mouseClicked() {
+  flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
+}
 

@@ -7,7 +7,7 @@ class Bird {
   float maxspeed;    // Maximum forward speed
   color birdColor;
 
-  Bird(float x, float y, float z) {
+  Bird(float x, float y, float z, color c) {
     acceleration = new PVector(0, 0, 0);
     // Give them a random 3D direction vector to start
     velocity = PVector.random3D().mult(random(1, 3));
@@ -15,7 +15,8 @@ class Bird {
     
     maxspeed = 4.0;
     maxforce = 0.25; // Higher force means tighter turning adjustments
-    birdColor = color(random(140, 180), random(40, 70), random(180, 220));
+    // birdColor = color(random(140, 180), random(40, 70), random(180, 220));
+    birdColor = c;
   }
 
   void run(ArrayList<Bird> birds) {
@@ -90,7 +91,11 @@ class Bird {
     pushMatrix(); translate(-10, -5, 15); sphere(4); popMatrix();
 
     // Wings
-    fill(birdColor - 30); 
+    fill(birdColor - 51);  // may sometimes cause it to jump to a different color
+
+    // Or get the inverse colo (was rather ugly)    
+    // fill(color(255 - red(birdColor)), 255 - green(birdColor), 255 - blue(birdColor));
+
     pushMatrix(); rotateY(flapAngle); translate(-30, 0, 0); box(40, 5, 20); popMatrix();
     pushMatrix(); rotateY(-flapAngle); translate(30, 0, 0); box(40, 5, 20); popMatrix();
     

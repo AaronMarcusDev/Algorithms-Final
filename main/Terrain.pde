@@ -1,7 +1,7 @@
 class Terrain {
   int cols, rows;
   int gss;          // grid square size
-  int w, h;         // Totale breedte en lengte van het terrein
+  int w, h;         // width and height of the terrain
 
   float[][] mesh;   // 2D array --> https://processing.org/tutorials/2darray
 
@@ -10,18 +10,26 @@ class Terrain {
     w = _w;
     h = _h;
     gss = _gss;
+
+    // Use w, h and gss to calculate the following values:
     cols = w / gss;
     rows = h / gss;
+
+    // This is only a 2D vector since the program calculates the height based on perlin noise later, no need to store it here.
     mesh = new float[cols][rows];
     
     generate(); // I run it in the constructor to immediately generate the terrain
   }
 
-  // Interne methode om de Perlin noise hoogtes te genereren
+  // Method to generate terrain heights
+
   void generate() {
-    float yoff = 0;
+    float initialYOff = random(10000); // <-- so that it actually regenerates upon calling the method.
+    float initialXOff = random(10000);
+
+    float yoff = initialYOff;
     for (int y = 0; y < rows; y++) {
-      float xoff = 0;
+      float xoff = initialXOff;
       for (int x = 0; x < cols; x++) {
         mesh[x][y] = map(noise(xoff, yoff), 0, 1, -100, 150);
         xoff += 0.08; 
@@ -30,13 +38,12 @@ class Terrain {
     }
   }
 
-  // Teken het terrein op het scherm
   void display() {
     pushMatrix();
-    // Positioneer het terrein op de bodem van de 3D wereld
+    // Position the terrain at the bottom of the 3D space
     translate(width/2, 550, -400);
-    rotateX(HALF_PI); // Kantel plat als een vloer
-    translate(-w/2, -h/2); // Centreer het grid
+    rotateX(HALF_PI); // Rotate it to be flat (like a ground should be)
+    translate(-w/2, -h/2); // Center the grid
     
     for (int y = 0; y < rows - 1; y++) {
       beginShape(TRIANGLE_STRIP);
