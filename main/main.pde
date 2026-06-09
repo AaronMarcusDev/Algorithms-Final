@@ -1,6 +1,5 @@
-Bird myBird;
-ArrayList<Bird> birds;
-Terrain myTerrain;
+ArrayList<Bird> flock;
+Terrain terrain;
 BG bg;
 
 color purple = color(45, 25, 80);
@@ -8,12 +7,13 @@ color orange  = color(235, 110, 85);
 
 void setup() {
   size(800, 600, P3D);
-  myTerrain = new Terrain(3000, 1500, 20);
+  terrain = new Terrain(3000, 1500, 20);
   bg = new BG();
-  birds = new ArrayList<Bird>();
+  flock = new ArrayList<Bird>();
 
-  for (int i = 0; i < 15; i++) {
-    birds.add(new Bird(random(100, width-100), random(100, 300), random(-1000, -200)));
+  for (int i = 0; i < 25; i++) {
+    // Spawning birds across X, Y, and Z axes
+    flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200)));
   }
 }
 
@@ -27,10 +27,11 @@ void draw() {
   hint(ENABLE_DEPTH_TEST); 
   lights();
 
-  myTerrain.display();
+  terrain.display();
 
-  for (Bird bird : birds) {
-    bird.fly();
-    bird.display();
+  for (Bird bird : flock) {
+    bird.run(flock);
   }
 }
+
+
