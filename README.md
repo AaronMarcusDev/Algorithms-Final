@@ -1,6 +1,8 @@
 # Algorithms-Final
 Submission for the course Algorithms for Creative Technology by Aaron.
 
+<img src="./images/curr.png" width="600"></img>
+
 ### Currently implemented features:
 - [x] 3D Flying Birds (Boids)
 - - [x] 3D Flocking --> Based on Shifmann's code
