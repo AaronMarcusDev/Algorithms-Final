@@ -1,44 +1,49 @@
 class Bird {
-  PVector pos;        // Current position of the bird
-  PVector noiseTime;  // Time offsets for Perlin Noise tracking
+  PVector pos;
+  PVector noiseTime;  // Time offsets for Perlin Noise
+  float rotX, rotY, rotZ;// Rotation angles
 
-  // New rotation angles assigned uniquely per bird using Gaussian distribution
-  float rotX, rotY, rotZ;
+  // Unique personality offsets so they aren't completely identical
+  float personalYawOffset; // Yaw = horizontal rotation
+  float personalPitchOffset; // pitch = vertical rotation
 
   color birdColor = color(200, 100, 250);
-  
+
   Bird(float x, float y, float z) {
     pos = new PVector(x, y, z);
-    
-    // Choose unique random starting points so noise curves aren't identical
     noiseTime = new PVector(random(1000), random(2000), random(3000));
 
-    // Processing's randomGaussian() yields a mean of 0 and a standard deviation of 1.
-    // Multiplying this value adjusts the spread (standard deviation) in radians.
-
-    rotX = randomGaussian() * radians(15);  // Pitch: Most tilt slightly up/down (15° dev)
-    rotY = randomGaussian() * radians(180); // Yaw: Birds can spawn facing any random direction around the circle
-    rotZ = randomGaussian() * radians(25);  // Roll: Most banking angles stay close to flat (25° dev)
+    // Small unique posture imperfections assigned once at birth
+    personalYawOffset = randomGaussian() * radians(5);
+    personalPitchOffset = randomGaussian() * radians(5);
   }
 
   void fly() {
-    // 1. Calculate a step/velocity vector based on noise (-1 to 1 range)
-    // map(noise, 0, 1, -maxSpeed, maxSpeed)
+    // 1. Map the perlin noise to the speed vector
     float vx = map(noise(noiseTime.x), 0, 1, -4, 4);
+    //                ^ curr value, min, max, new min, new max
+
     float vy = map(noise(noiseTime.y), 0, 1, -4, 4);
     float vz = map(noise(noiseTime.z), 0, 1, -2, 2);
 
-    // 2. Add the noise velocity to the bird's active position
     pos.x += vx;
     pos.y += vy;
     pos.z += vz;
 
-    // 3. Keep birds on screen (Optional: Constrain or Wrap around boundaries)
+    pos.y = constrain(pos.y, 50, 400); // So they do not go below the terrain
+
+    // 2. DE MAKKELIJKE ROTATIE: Gebruik ruis om de hoeken direct te veranderen
+    // We mappen de ruis naar een kleine verandering (bijv. tussen -0.05 en 0.05 radialen)
+    rotY += map(noise(noiseTime.x + 500), 0, 1, -0.03, 0.03);
+    rotX += map(noise(noiseTime.y + 500), 0, 1, -0.02, 0.02);
+    rotZ = vx * 0.05; // Simpele bank-hoek op basis van de zijwaartse snelheid
+
+    // 3. Randen controleren
     pos.x = constrain(pos.x, 50, width - 50);
     pos.y = constrain(pos.y, 50, height - 50);
     pos.z = constrain(pos.z, -1000, -100);
 
-    // 4. Advance your noise timeline
+    // 4. Tijdlijn vooruitspoelen
     noiseTime.x += random(0.001, 0.007);
     noiseTime.y += random(0.001, 0.007);
     noiseTime.z += random(0.001, 0.003);
@@ -47,18 +52,17 @@ class Bird {
 
   void display() {
     pushMatrix();
-    // Move the coordinate center to the bird's active position
     translate(pos.x, pos.y, pos.z);
 
-    // --- APPLY GAUSSIAN ROTATIONS ---
-    // Apply pitch, yaw, and roll so each bird has its own unique flight posture
+    // --- APPLY DYNAMIC ROTATIONS ---
+    // The order matters! Yaw (Y) -> Pitch (X) -> Roll (Z)
     rotateY(rotY);
-    // rotateX(rotX);
-    // rotateZ(rotZ);
+    rotateX(rotX);
+    rotateZ(rotZ);
 
     // Calculate wing flapping angle using a sine wave
     float flapSpeed = millis() * 0.0075;
-    float flapAngle = sin(flapSpeed) * radians(15); // Flaps 45 degrees up/down
+    float flapAngle = sin(flapSpeed) * radians(15);
 
     // --- 1. Body & Details ---
     fill(birdColor);
@@ -98,6 +102,7 @@ class Bird {
     box(40, 5, 20);
     popMatrix();
 
-    popMatrix(); // Restores background isolation matrix
+    popMatrix();
   }
 }
+
