@@ -32,6 +32,7 @@ class Terrain {
       float xoff = initialXOff;
       for (int x = 0; x < cols; x++) {
         mesh[x][y] = map(noise(xoff, yoff), 0, 1, -100, 150);
+        //                                          ^-- lowest and highest point
         xoff += 0.08; 
       }
       yoff += 0.08;

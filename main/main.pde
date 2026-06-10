@@ -4,7 +4,6 @@ BG bg;
 Gun gun;
 ColorSet colorset;
 Menu menu;
-boolean showMenu;
 
 void setup() {
   size(800, 600, P3D);
@@ -13,7 +12,7 @@ void setup() {
   flock = new ArrayList<Bird>();
   colorset = new ColorSet();
   menu = new Menu();
-  showMenu = false;
+  menu.showMenu = false;
 
   for (int i = 0; i < 5; i++) {
     // Spawning birds across X, Y, and Z axes
@@ -36,7 +35,7 @@ void draw() {
 
   if (keyPressed) {
     if (key == 'm') {
-      showMenu = !showMenu;
+      menu.showMenu = !menu.showMenu;
 	  delay(80); // so that it has a bit of time; 
 	  // otherwise it will close too quickly again since it still registers a key press;
     } else if (key == 'g') {
@@ -56,9 +55,7 @@ void draw() {
 
   //   gun.display();
 
-  if (showMenu) {
-    menu.show();
-  }
+  menu.show();
 }
 
 void mouseClicked() {
