@@ -1,7 +1,8 @@
 # Algorithms-Final
 Submission for the course Algorithms for Creative Technology by Aaron.
 
-<img src="./images/curr.png" width="600"></img>
+<img src="./images/curr.png" width="400"></img>
+<img src="./images/menu.png" width="400"></img>
 
 ### Currently implemented features:
 - [x] 3D Flying Birds (Boids)

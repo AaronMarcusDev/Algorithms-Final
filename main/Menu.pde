@@ -1,20 +1,17 @@
 class Menu {
   boolean showMenu = false;
 
-  int terrainHeight = 150;// Default terrain height (see Terrain.pde)
-  // Rectangle[] buttons;
+  // Terrain height options
+  int selectedTerrainHeight = 150;
+  int[] values = {0, 75, 150, 250}; // can just be regular array (not dynamic)
+  String[] labels = {"0", "75", "150", "250"};
 
-  // For terrain height buttons
   float btnW = 120;
   float btnH = 40;
 
-  // Button rectangles
-  // Rectangle[] buttons = {
-  //   new Rectangle(0, 0, 0, 0), // 0
-  //   new Rectangle(0, 0, 0, 0), // 75
-  //   new Rectangle(0, 0, 0, 0), // 150
-  //   new Rectangle(0, 0, 0, 0)   // 250
-  // };
+  // Button positions
+  float[] bx = new float[4];
+  float[] by = new float[4];
 
 
   void show() {
@@ -31,7 +28,7 @@ class Menu {
       text("MENU", width / 2, 80);
 
       // Divider
-      stroke(255); // White line with transparency
+      stroke(255); // White line
       strokeWeight(2);
       line(width / 2 - 200, 120, width / 2 + 200, 120);
 
@@ -54,26 +51,50 @@ class Menu {
       text("Set max terrain height", width / 2 - 130, 350);
 
       // Divider
-      stroke(255); // White line with transparency
+      stroke(255); // White line
       strokeWeight(2);
       line(width / 2 - 200, 390, width / 2 + 200, 390);
 
-      // text("Type a nu");
+      // Draw terrain height buttons
+      float startBtnX = width / 2 - 255;
+      float startBtnY = 420;
+
+      textAlign(CENTER, CENTER);
+      textSize(22);
+
+      // Loop through buttons and draw them
+      for (int i = 0; i < 4; i++) {
+        bx[i] = startBtnX + i * (btnW + 20);
+        //        start loc + index * (buttonwidth + offset)
+        by[i] = startBtnY; // Same for all buttons
+
+        // Highlight selected button
+        if (selectedTerrainHeight == values[i]) {
+          fill(180, 220, 255);
+        } else {
+          fill(255);
+        }
+
+        rect(bx[i], by[i], btnW, btnH, 8);
+
+        fill(0);
+        // Place labels in center of buttons
+        text(labels[i], bx[i] + btnW / 2, by[i] + btnH / 2);
+      }
     }
   }
 
-  // void menuClick() {
-  //   int[] values = {0, 75, 150, 250};
+  // Handle mouse clicks on buttons
+  void handleClick() {
+    // loop through button
+    for (int i = 0; i < 4; i++) {
+      // check if mouse is in button
+      if (mouseX > bx[i] && mouseX < bx[i] + btnW &&
+        mouseY > by[i] && mouseY < by[i] + btnH) {
 
-  //   for (int i = 0; i < 4; i++) {
-  //     Rectangle r = menu.buttons[i];
-
-  //     if (mouseX > r.x && mouseX < r.x + r.w &&
-  //       mouseY > r.y && mouseY < r.y + r.h) {
-
-  //       terrainHeight = values[i];
-  //       println("Terrain height set to: " + terrainHeight);
-  //     }
-  //   }
-  // }
+        selectedTerrainHeight = values[i];
+        println("Terrain height set to: " + selectedTerrainHeight);
+      }
+    }
+  }
 }

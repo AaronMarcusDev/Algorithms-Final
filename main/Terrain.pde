@@ -2,6 +2,7 @@ class Terrain {
   int cols, rows;
   int gss;          // grid square size
   int w, h;         // width and height of the terrain
+  int maxHeight;
 
   float[][] mesh;   // 2D array --> https://processing.org/tutorials/2darray
 
@@ -10,6 +11,7 @@ class Terrain {
     w = _w;
     h = _h;
     gss = _gss;
+    maxHeight = 150;
 
     // Use w, h and gss to calculate the following values:
     cols = w / gss;
@@ -31,7 +33,7 @@ class Terrain {
     for (int y = 0; y < rows; y++) {
       float xoff = initialXOff;
       for (int x = 0; x < cols; x++) {
-        mesh[x][y] = map(noise(xoff, yoff), 0, 1, -100, 150);
+        mesh[x][y] = map(noise(xoff, yoff), 0, 1, -100, maxHeight);
         //                                          ^-- lowest and highest point
         xoff += 0.08; 
       }
