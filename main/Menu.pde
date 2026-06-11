@@ -93,7 +93,7 @@ class Menu {
         mouseY > by[i] && mouseY < by[i] + btnH) {
 
         selectedTerrainHeight = values[i];
-        println("Terrain height set to: " + selectedTerrainHeight);
+        // println("Terrain height set to: " + selectedTerrainHeight);
       }
     }
   }

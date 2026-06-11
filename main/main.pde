@@ -4,22 +4,31 @@ BG bg;
 Gun gun;
 ColorSet colorset;
 Menu menu;
+Particle3D particle;
 
 void setup() {
   size(800, 600, P3D);
+
+  // init classes
   terrain = new Terrain(3000, 1500, 20);
   bg = new BG();
   flock = new ArrayList<Bird>();
   colorset = new ColorSet();
   menu = new Menu();
+  particle = new Particle3D(width / 2, height / 2, 100);
+
+  // other variables
   menu.showMenu = false;
 
+  // add 5 birds when starting
   for (int i = 0; i < 5; i++) {
     // Spawning birds across X, Y, and Z axes
     flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
   }
 
-  //   gun = new Gun(width / 2 + 40, height / 2 +10, 450, 20, 4, 20);
+  particle.render();
+
+  //?   gun = new Gun(width / 2 + 40, height / 2 +10, 450, 20, 4, 20);
   //   //                                   ^-- Z at 500 so it is in front of the camera, 0 seems to center it
 }
 
@@ -54,6 +63,9 @@ void draw() {
   }
 
   //   gun.display();
+
+  particle.update();
+  particle.render();
 
   menu.show();
 }
