@@ -5,6 +5,7 @@ Gun gun;
 ColorSet colorset;
 Menu menu;
 Particle3D particle;
+ParticleSystem ps;
 
 void setup() {
   size(800, 600, P3D);
@@ -16,6 +17,8 @@ void setup() {
   colorset = new ColorSet();
   menu = new Menu();
   particle = new Particle3D(width / 2, height / 2, 100);
+  ps = new ParticleSystem(2);
+  //                      ^-- number of particles / emitrate
 
   // other variables
   menu.showMenu = false;
@@ -25,8 +28,6 @@ void setup() {
     // Spawning birds across X, Y, and Z axes
     flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
   }
-
-  particle.render();
 
   //?   gun = new Gun(width / 2 + 40, height / 2 +10, 450, 20, 4, 20);
   //   //                                   ^-- Z at 500 so it is in front of the camera, 0 seems to center it
@@ -64,8 +65,13 @@ void draw() {
 
   //   gun.display();
 
-  particle.update();
+  // particle.update();
+  // particle.render();
+  PVector pp = new PVector(width/2, height/2, 100);
+
   particle.render();
+  ps.update(pp);
+  ps.render();
 
   menu.show();
 }
