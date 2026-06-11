@@ -14,9 +14,25 @@ class Menu {
   float[] by = new float[4];
 
 
+  void showHint() {
+    hint(DISABLE_DEPTH_TEST); // Otherwise the terrain will go through it :(
+    // https://processing.org/reference/hint_.html
+
+    textSize(24);             
+    textAlign(LEFT, BOTTOM);
+
+    // darker text in the back like a drop shadow
+    fill(0, 150);
+    text("Press M for Menu", 21, height - 19);
+    fill(255);
+    text("Press M for Menu", 20, height - 20);
+
+    hint(ENABLE_DEPTH_TEST); // Enable 3D depth again
+  }
+
+  
   void show() {
     if (showMenu) {
-
       // Blurry background
       fill(100, 100, 100, 150);
       //                   ^-- Opacity
@@ -25,12 +41,12 @@ class Menu {
       textAlign(CENTER, TOP);
       fill(255);
       textSize(36);
-      text("MENU", width / 2, 80);
+      text("MENU", width / 2, 60);
 
       // Divider
       stroke(255); // White line
       strokeWeight(2);
-      line(width / 2 - 200, 120, width / 2 + 200, 120);
+      line(width / 2 - 200, 100, width / 2 + 200, 100);
 
       textSize(18);
       fill(255);
@@ -38,13 +54,14 @@ class Menu {
       // Left-align the actual text but keep the block centered
       textAlign(LEFT, TOP);
       float startX = width / 2 - 130;
-      float startY = 170;
+      float startY = 140;
       float spacing = 40; // Vertical gap between lines
 
       text("> 'g' to regenerate terrain", startX, startY);
       text("> 'r' to remove all current birds", startX, startY + spacing);
-      text("> mouse click for spawning new bird", startX, startY + (spacing * 2));
-      text("> 'm' for opening/closing menu", startX, startY + (spacing * 3));
+      text("> right mouse click for spawning new bird", startX, startY + (spacing * 2));
+      text("> left mouse click for throwing a rock", startX, startY + (spacing * 3));
+      text("> 'm' for opening/closing menu", startX, startY + (spacing * 4));
 
       fill(255);
       textSize(28);
@@ -98,3 +115,4 @@ class Menu {
     }
   }
 }
+

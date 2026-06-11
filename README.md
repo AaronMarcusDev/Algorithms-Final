@@ -20,6 +20,9 @@ Submission for the course Algorithms for Creative Technology by Aaron.
 
 ### Todo:
 - [ ] Add meaningful user interaction
+- - [x] Throw rocks!
+- - [ ] Make rocks despawn birds
+- - [ ] Add particles upon despawn
 
 ### Check for final assignment / rubric
 - [ ] Noise
