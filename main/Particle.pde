@@ -10,6 +10,7 @@ class Particle3D {
   float particleLifeLocal;
   float size;
   color c;
+  Sphere3D particleSphere;
 
   Particle3D(float x, float y, float z) {
     // Added a z-axis to the position, velocity and acceleration
@@ -21,6 +22,7 @@ class Particle3D {
     life = 80;
     particleLifeLocal = 80;
     size = random(4, 8); // Slightly increased base size for better visibility in 3D depth
+    particleSphere = new Sphere3D();
 
     c = getColor();
   }
@@ -47,10 +49,12 @@ class Particle3D {
     fill(red(c), green(c), blue(c));
 
     // rendering using matrix translation
-    pushMatrix();
-    translate(pos.x, pos.y, pos.z); // Move to the particle's active 3D coordinates
-    sphere(currentSize);             // Draw a real 3D sphere shape
-    popMatrix();
+    // pushMatrix();
+    // translate(pos.x, pos.y, pos.z); // Move to the particle's active 3D coordinates
+    // sphere(currentSize);             // Draw a real 3D sphere shape
+    // popMatrix();
+
+    particleSphere.render(pos, currentSize);
   }
 
   color getColor() { // only used within this class, not accessed from outside
