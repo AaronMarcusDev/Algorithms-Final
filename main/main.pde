@@ -8,6 +8,9 @@ BG bg;
 ColorSet colorset;
 Menu menu;
 ParticleSystem ps;
+int timerStart;
+int particleDuration;
+PVector explosionPos;
 
 
 void setup() {
@@ -24,6 +27,9 @@ void setup() {
 
   // other variables
   menu.showMenu = false;
+  timerStart = 0;
+  particleDuration = 3000;
+  explosionPos = new PVector(0, 0, 0);
 
   // add 5 birds when starting
   for (int i = 0; i < 5; i++) {
@@ -62,22 +68,35 @@ void draw() {
     bird.run(flock);
   }
 
-  // Update and render active rocks
+  // Update and render active rocks + handle bird collision detection
   for (int i = rocks.size() - 1; i >= 0; i--) {
     Rock r = rocks.get(i);
     r.update();
     r.display();
 
-    // Remove rocks that miss and fall out of bounds (to save memory)
-    if (r.isOut()) {
-      rocks.remove(i);
+    // Check rock against all birds to get 'hitbox' --> Just a distance vector in my case
+    for (int j = flock.size() - 1; j >= 0; j--) {
+      Bird b = flock.get(j);
+      float distance = PVector.dist(r.pos, b.position); // Note: Ensure your Bird class uses b.position or b.pos
+
+      // Rock radius (~15) and Bird radius (~20) = 35 pixels apart means they touched!
+      if (distance < 35.0) {
+        timerStart = millis();
+        ps.clear();
+        explosionPos = b.position.copy();
+        flock.remove(j);
+        rocks.remove(i);
+        break;
+      }
     }
   }
 
-  PVector pp = new PVector(width/2, height/2, 100); // temporary particle position
+  if (millis() < timerStart + particleDuration) {
+    ps.update(explosionPos); // Continuously runs gravity and movement physics at the anchor spot
+    //                          Had a lot of issues before doing this
+    ps.render();
+  }
 
-  // ps.update(pp);
-  // ps.render();
   menu.showHint();
   menu.show();
 }
@@ -100,4 +119,3 @@ void mouseClicked() {
     rocks.add(new Rock(startPoint, targetPoint, 35));
   }
 }
-

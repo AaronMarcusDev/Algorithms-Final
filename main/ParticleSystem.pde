@@ -8,7 +8,6 @@ class ParticleSystem {
   }
 
   void update(PVector position) { // position needs x, y and z
-
     // emit new particles
     for (int i = 0; i < emitRate; i++) {
       // add new particles to the ArrayList
@@ -38,6 +37,10 @@ class ParticleSystem {
     }
 
     blendMode(BLEND);
+  }
+
+  void clear() {
+    particles.clear();
   }
 }
 

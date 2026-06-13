@@ -17,12 +17,13 @@ Submission for the course Algorithms for Creative Technology by Aaron.
 - [x] Particle system
 - - [x] particle class
 - - [x] particle system class
+- [x] Meaningful user interaction
+- - [x] Throw rocks!
+- - [x] Make rocks despawn birds
+- - [x] Add particles upon despawn
 
 ### Todo:
-- [ ] Add meaningful user interaction
-- - [x] Throw rocks!
-- - [ ] Make rocks despawn birds
-- - [ ] Add particles upon despawn
+- [ ] Gaussian noise
 
 ### Check for final assignment / rubric
 - [ ] Noise

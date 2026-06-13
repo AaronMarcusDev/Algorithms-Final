@@ -60,7 +60,8 @@ class Particle3D {
   color getColor() { // only used within this class, not accessed from outside
     // purplish random colours
     return color(
-      random(150, 255), 80, random(200, 255) );
+      random(80, 110), 100, random(80, 110)
+      );
   }
 }
 
@@ -110,4 +111,3 @@ class Particle3D {
 //     circle(pos.x,pos.y, size * alpha * 2); // also decrease the size based on the alpha
 //   }
 // }
-
