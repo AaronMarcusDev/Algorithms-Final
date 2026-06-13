@@ -13,12 +13,11 @@ class Menu {
   float[] bx = new float[4];
   float[] by = new float[4];
 
-
   void showHint() {
     hint(DISABLE_DEPTH_TEST); // Otherwise the terrain will go through it :(
     // https://processing.org/reference/hint_.html
 
-    textSize(24);             
+    textSize(24);
     textAlign(LEFT, BOTTOM);
 
     // darker text in the back like a drop shadow
@@ -30,7 +29,6 @@ class Menu {
     hint(ENABLE_DEPTH_TEST); // Enable 3D depth again
   }
 
-  
   void show() {
     if (showMenu) {
       // Blurry background
@@ -58,7 +56,7 @@ class Menu {
       float spacing = 40; // Vertical gap between lines
 
       text("> 'g' to regenerate terrain", startX, startY);
-      text("> 'r' to remove all current birds", startX, startY + spacing);
+      text("> 'r' to restart with new birds", startX, startY + spacing);
       text("> right mouse click for spawning new bird", startX, startY + (spacing * 2));
       text("> left mouse click for throwing a rock", startX, startY + (spacing * 3));
       text("> 'm' for opening/closing menu", startX, startY + (spacing * 4));
@@ -115,4 +113,3 @@ class Menu {
     }
   }
 }
-

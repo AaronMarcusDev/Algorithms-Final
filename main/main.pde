@@ -31,10 +31,22 @@ void setup() {
   particleDuration = 3000;
   explosionPos = new PVector(0, 0, 0);
 
-  // add 5 birds when starting
-  for (int i = 0; i < 5; i++) {
+  // add 7 birds when starting
+  spawnSampleBirds(7);
+}
+
+void spawnSampleBirds(int number) {
+  for (int i = 0; i < number; i++) {
     // Spawning birds across X, Y, and Z axes
-    flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
+    // flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
+
+    // I use normal distribution to make them nice and centered,
+    // but still not too predictable for the player
+    flock.add(new Bird(
+      (width / 2)  + (randomGaussian() * 160), // can deviate +/-160px
+      (height / 2) + (randomGaussian() * 100), // can deviate +/-100px
+      -400 + (randomGaussian() * 150), // can deviate +/-150px from ~center of Z
+      colorset.getBirdColor()));
   }
 }
 
@@ -59,6 +71,9 @@ void draw() {
       terrain.generate();
     } else if (key == 'r') {
       flock.clear();
+      spawnSampleBirds(7);
+      // menu.resetShow();
+      delay(100);
     }
   }
 

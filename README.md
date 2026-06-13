@@ -21,9 +21,10 @@ Submission for the course Algorithms for Creative Technology by Aaron.
 - - [x] Throw rocks!
 - - [x] Make rocks despawn birds
 - - [x] Add particles upon despawn
+- [x] Spawn birds normally distributed
 
 ### Todo:
-- [ ] Gaussian noise
+Not much I guess.
 
 ### Check for final assignment / rubric
 - [ ] Noise
