@@ -18,7 +18,7 @@ class Constants {
 
   // Particle and -System
   static final int PARTICLE_EMIT_RATE = 2;
-  static final int EXPLOSION_DURATION_MS = 3000;
+  static final int PARTICLES_DURATION = 3000;
   static final float PARTICLE_GRAVITY = 0.04;
   static final int PARTICLE_MAX_LIFE = 80;
 
@@ -30,18 +30,24 @@ class Constants {
   // Rock
   static final float ROCK_SIZE = 15.0;
   static final float ROCK_GRAVITY = 0.25;
-  static final float ROCK_OUT_Y_MAX = 800;
-  static final float ROCK_OUT_Z_MIN = -1500;
 
   // Bird (physical)
-  static final float BIRD_BODY_SIZE = 20.0;
-  static final float BIRD_EYE_SIZE = 4.0;
+  static final int BIRD_SIZE = 20;
   static final float BIRD_FLAP_SPEED = 0.0075;
-  static final float BIRD_MAX_FLAP_ANGLE = 15.0;
+  static final float BIRD_FLAP_ANGLE = 15.0;
+
+  // Bird position constraints
+  static final int BIRD_CONSTRAINT_TERRAIN = 400;
+  static final int BIRD_CONSTRAINT_EDGE = 50;
+  static final int BIRD_CONSTRAINT_CAMERA = -100;
+  static final int BIRD_CONSTRAINT_DEPTH = -100;
 
   // Flocking
+  static final float BIRD_MAX_SPEED = 4.0;
+  static final float BIRD_MAX_FORCE = 0.25;
   static final float SEPARATION_WEIGHT = 2.0;
-  static final float LIGNMENT_WEIGHT = 0.5;
+  static final float ALIGNMENT_WEIGHT = 0.5;
   static final float COHESION_WEIGHT = 1.0;
+  static final float DESIRED_SEPARATION = 65.0; // Distance buffer between birds
+  static final float BIRD_NEIGHBOUR_DIST = 70.0; // How far between to birds for them to 'see' each other
 }
-

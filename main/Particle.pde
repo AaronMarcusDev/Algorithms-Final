@@ -7,7 +7,6 @@ class Particle3D {
   PVector vel;
   PVector acc;
   float life;
-  float particleLifeLocal;
   float size;
   color c;
   Sphere3D particleSphere;
@@ -17,10 +16,9 @@ class Particle3D {
     pos = new PVector(x, y, z);
     // Explodes outwards in all directions including depth (Z)
     vel = new PVector(random(-1.25, 1.25), random(-2, -0.5), random(-1.25, 1.25));
-    acc = new PVector(0, 0.04, 0); // Constant downward gravity force on Y-axis
+    acc = new PVector(0, Constants.PARTICLE_GRAVITY, 0); // Constant downward gravity force on Y-axis
 
     life = 80;
-    particleLifeLocal = 80;
     size = random(4, 8); // Slightly increased base size for better visibility in 3D depth
     particleSphere = new Sphere3D();
 
@@ -38,7 +36,7 @@ class Particle3D {
   }
 
   void render() {
-    float lifeRatio = life / particleLifeLocal; // in the original I called it aplha --> this should be more clear
+    float lifeRatio = life / Constants.PARTICLE_MAX_LIFE; // in the original I called it aplha --> this should be more clear
 
     // Calculate a dynamic 3D size (older = smaller)
     float currentSize = size * lifeRatio;
@@ -58,7 +56,7 @@ class Particle3D {
   }
 
   color getColor() { // only used within this class, not accessed from outside
-    // purplish random colours
+    // grayish random colours
     return color(
       random(80, 110), 100, random(80, 110)
       );

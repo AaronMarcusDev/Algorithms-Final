@@ -1,5 +1,22 @@
-// Aaron Struikenkamp s3731944 (UTwente)
-// CreaTe Subject: Algorithms
+/*
+ * Author: Aaron Struikenkamp s3731944
+ * Course: Algorithms CreaTe 2025/2026
+ * No collaboration
+ * Sources used (also in README.md):
+ * - Flocking: own implementation based on Shiffman's 2D implementation
+ * - Particle system: adapted to 3D from my own Assignment 4
+ * - Terrain Perlin noise: inspired by Nature of Code, but is my own code
+ * - No AI used for programming logic, only for comparing against rubric and catching mistakes
+ 
+ * Other sources used in code (like methods and equations)
+ * - https://processing.org/reference/hint_.html
+ * - https://processing.org/examples/flocking.html
+ * - https://www.youtube.com/watch?v=qFSAcCwQS0E (atan & atan2)
+ * - https://processing.org/reference/hint_.html (processing disable depth for text)
+ * - https://processing.org/reference/ArrayList.html (ArrayList)
+ * - https://processing.org/reference/blendMode_.html (blending colours for particles)
+ * - https://processing.org/tutorials/2darray (2D Array for terrain grid)
+*/
 
 // Class definitions
 ArrayList<Bird> flock;
@@ -12,7 +29,6 @@ ParticleSystem ps;
 
 // Necessary global variables
 int timerStart;
-int particleDuration;
 PVector explosionPos;
 
 
@@ -20,18 +36,21 @@ void setup() {
   size(800, 600, P3D);
 
   // init classes
-  terrain = new Terrain(3000, 1500, 20);
+  terrain = new Terrain(
+    Constants.TERRAIN_WIDTH,
+    Constants.TERRAIN_HEIGHT,
+    Constants.TERRAIN_GRID_SIZE
+    );
+
   bg = new BG();
   flock = new ArrayList<Bird>();
   colorset = new ColorSet();
   menu = new Menu();
-  ps = new ParticleSystem(2);
-  //                      ^-- number of particles / emitrate
+  ps = new ParticleSystem();
 
   // other variables
   menu.showMenu = false;
   timerStart = 0;
-  particleDuration = 3000;
   explosionPos = new PVector(0, 0, 0);
 
   // add 7 birds when starting
@@ -44,13 +63,13 @@ void spawnSampleBirds(int number) {
     // but still not too predictable for the player
     flock.add(
       new Bird(
-        (width / 2)  + (randomGaussian() * Constants.SPAWN_X_SPREAD), // can deviate +/-160px
-        (height / 2) + (randomGaussian() * Constants.SPAWN_Y_SPREAD), // can deviate +/-100px
-        Constants.SPAWN_Z_CENTER + (randomGaussian() * Constants.SPAWN_Z_SPREAD), // can deviate +/-150px from ~center of Z
-        colorset.getBirdColor(),
-        20 // bird size
+      (width / 2)  + (randomGaussian() * Constants.SPAWN_X_SPREAD), // can deviate +/-160px
+      (height / 2) + (randomGaussian() * Constants.SPAWN_Y_SPREAD), // can deviate +/-100px
+      Constants.SPAWN_Z_CENTER + (randomGaussian() * Constants.SPAWN_Z_SPREAD), // can deviate +/-150px from ~center of Z
+      colorset.getBirdColor(),
+      Constants.BIRD_SIZE // bird size
       )
-    );
+      );
   }
 }
 
@@ -70,7 +89,6 @@ void draw() {
       delay(80); // so that it has a bit of time;
       // otherwise it will close too quickly again since it still registers a key press;
     } else if (key == 'g') {
-      // terrain = new Terrain(3000, 1500, 20);
       terrain.maxHeight = menu.selectedTerrainHeight;
       terrain.generate();
     } else if (key == 'r') {
@@ -98,7 +116,7 @@ void draw() {
       float distance = PVector.dist(r.pos, b.position); // Note: Ensure your Bird class uses b.position or b.pos
 
       // Rock radius (~15) and Bird radius (~20) = 35 pixels apart means they touched!
-      if (distance < 35.0) {
+      if (distance < Constants.COLLISION_DISTANCE) {
         timerStart = millis();
         ps.clear();
         explosionPos = b.position.copy();
@@ -109,7 +127,7 @@ void draw() {
     }
   }
 
-  if (millis() < timerStart + particleDuration) {
+  if (millis() < timerStart + Constants.PARTICLES_DURATION) {
     ps.update(explosionPos); // Continuously runs gravity and movement physics at the anchor spot
     //                          Had a lot of issues before doing this
     ps.render();
@@ -128,12 +146,12 @@ void mouseClicked() {
 
   if (mouseButton == RIGHT) {
     // Bird spawning
-    flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor(), 20));
+    flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor(), Constants.BIRD_SIZE));
   } else if (mouseButton == LEFT) {
     // Rock throwing
     PVector startPoint = new PVector(width / 2 + 40, height / 2 + 50, 450);
     PVector targetPoint = new PVector(mouseX, mouseY, -500);
-    rocks.add(new Rock(startPoint, targetPoint, 35));
+    rocks.add(new Rock(startPoint, targetPoint, 35, Constants.ROCK_SIZE));
   }
 }
 

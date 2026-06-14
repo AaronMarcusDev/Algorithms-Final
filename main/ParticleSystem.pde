@@ -1,15 +1,13 @@
 class ParticleSystem {
   ArrayList<Particle3D> particles;
-  int emitRate;
 
-  ParticleSystem(int _emitRate) {
-    emitRate = _emitRate;
+  ParticleSystem() {
     particles = new ArrayList<Particle3D>();
   }
 
   void update(PVector position) { // position needs x, y and z
     // emit new particles
-    for (int i = 0; i < emitRate; i++) {
+    for (int i = 0; i < Constants.PARTICLE_EMIT_RATE; i++) {
       // add new particles to the ArrayList
       particles.add(
         new Particle3D(position.x, position.y, position.z)
