@@ -1,6 +1,7 @@
 // Aaron Struikenkamp s3731944 (UTwente)
 // CreaTe Subject: Algorithms
 
+// Class definitions
 ArrayList<Bird> flock;
 ArrayList<Rock> rocks = new ArrayList<Rock>();
 Terrain terrain;
@@ -8,6 +9,8 @@ BG bg;
 ColorSet colorset;
 Menu menu;
 ParticleSystem ps;
+
+// Necessary global variables
 int timerStart;
 int particleDuration;
 PVector explosionPos;
@@ -32,21 +35,22 @@ void setup() {
   explosionPos = new PVector(0, 0, 0);
 
   // add 7 birds when starting
-  spawnSampleBirds(7);
+  spawnSampleBirds(Constants.SAMPLE_BIRD_COUNT);
 }
 
 void spawnSampleBirds(int number) {
   for (int i = 0; i < number; i++) {
-    // Spawning birds across X, Y, and Z axes
-    // flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
-
     // I use normal distribution to make them nice and centered,
     // but still not too predictable for the player
-    flock.add(new Bird(
-      (width / 2)  + (randomGaussian() * 160), // can deviate +/-160px
-      (height / 2) + (randomGaussian() * 100), // can deviate +/-100px
-      -400 + (randomGaussian() * 150), // can deviate +/-150px from ~center of Z
-      colorset.getBirdColor()));
+    flock.add(
+      new Bird(
+        (width / 2)  + (randomGaussian() * Constants.SPAWN_X_SPREAD), // can deviate +/-160px
+        (height / 2) + (randomGaussian() * Constants.SPAWN_Y_SPREAD), // can deviate +/-100px
+        Constants.SPAWN_Z_CENTER + (randomGaussian() * Constants.SPAWN_Z_SPREAD), // can deviate +/-150px from ~center of Z
+        colorset.getBirdColor(),
+        20 // bird size
+      )
+    );
   }
 }
 
@@ -71,8 +75,7 @@ void draw() {
       terrain.generate();
     } else if (key == 'r') {
       flock.clear();
-      spawnSampleBirds(7);
-      // menu.resetShow();
+      spawnSampleBirds(Constants.SAMPLE_BIRD_COUNT);
       delay(100);
     }
   }
@@ -124,9 +127,8 @@ void mouseClicked() {
   }
 
   if (mouseButton == RIGHT) {
-    // LINKS: Schiet een steen af richting de vogels
     // Bird spawning
-    flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor()));
+    flock.add(new Bird(random(200, width-200), random(100, 300), random(-600, -200), colorset.getBirdColor(), 20));
   } else if (mouseButton == LEFT) {
     // Rock throwing
     PVector startPoint = new PVector(width / 2 + 40, height / 2 + 50, 450);
@@ -134,3 +136,4 @@ void mouseClicked() {
     rocks.add(new Rock(startPoint, targetPoint, 35));
   }
 }
+

@@ -2,21 +2,23 @@ class Bird {
   PVector position;
   PVector velocity;
   PVector acceleration;
-  
+
   float maxforce;    // Maximum steering control
   float maxspeed;    // Maximum forward speed
   color birdColor;
+  int birdSize;
 
-  Bird(float x, float y, float z, color c) {
+  Bird(float x, float y, float z, color c, int s) {
     acceleration = new PVector(0, 0, 0);
     // Give them a random 3D direction vector to start
     velocity = PVector.random3D().mult(random(1, 3));
     position = new PVector(x, y, z);
-    
+
     maxspeed = 4.0;
     maxforce = 0.25; // Higher force means tighter turning adjustments
     // birdColor = color(random(140, 180), random(40, 70), random(180, 220));
     birdColor = c;
+    birdSize = s;
   }
 
   void run(ArrayList<Bird> birds) {
@@ -32,15 +34,15 @@ class Bird {
 
   // --- REYNOLDS FLOCKING RULES (ADAPTED TO 3D) ---
   void flock(ArrayList<Bird> birds) {
-    PVector sep = separate(birds);   
-    PVector ali = align(birds);      
-    PVector coh = cohesion(birds);   
-    
+    PVector sep = separate(birds);
+    PVector ali = align(birds);
+    PVector coh = cohesion(birds);
+
     // Weight parameters
     sep.mult(2);
     ali.mult(0.5);
     coh.mult(1.0);
-    
+
     applyForce(sep);
     applyForce(ali);
     applyForce(coh);
@@ -54,51 +56,62 @@ class Bird {
   }
 
   PVector seek(PVector target) {
-    PVector desired = PVector.sub(target, position);  
+    PVector desired = PVector.sub(target, position);
     desired.normalize();
     desired.mult(maxspeed);
     PVector steer = PVector.sub(desired, velocity);
-    steer.limit(maxforce);  
+    steer.limit(maxforce);
     return steer;
   }
-  
+
   void render() {
     pushMatrix();
     translate(position.x, position.y, position.z);
-    
+
     // --- 3D ROTATION WITHOUT ATAN2 (Using Velocity direction) ---
     float rotY = atan2(velocity.x, velocity.z) + PI;
     float horizontalSpeed = sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
     float rotX = atan2(-velocity.y, horizontalSpeed);
     float rotZ = velocity.x * 0.05; // Bank tilt
-    
-    rotateY(rotY); 
-    rotateX(rotX); 
+
+    rotateY(rotY);
+    rotateX(rotX);
     rotateZ(rotZ);
 
     // Wing flapping animation mechanics
     float flapSpeed = millis() * 0.0075;
-    float flapAngle = sin(flapSpeed) * radians(15); 
+    float flapAngle = sin(flapSpeed) * radians(15);
 
     // Render Bird Body Shapes
     fill(birdColor);
     noStroke();
-    sphere(20); 
+    sphere(birdSize);
 
     // Eyes
     fill(0);
-    pushMatrix(); translate(10, -5, 15); sphere(4); popMatrix();
-    pushMatrix(); translate(-10, -5, 15); sphere(4); popMatrix();
+    pushMatrix();
+    translate(10, -5, 15);
+    sphere(birdSize/5);
+    popMatrix();
+    pushMatrix();
+    translate(-10, -5, 15);
+    sphere(birdSize/5);
+    popMatrix();
 
     // Wings
-    fill(birdColor - 51);  // may sometimes cause it to jump to a different color
+    fill(red(birdColor)-51, green(birdColor)-51, blue(birdColor)-51);
 
-    // Or get the inverse colo (was rather ugly)    
-    // fill(color(255 - red(birdColor)), 255 - green(birdColor), 255 - blue(birdColor));
+    pushMatrix();
+    rotateY(flapAngle);
+    translate(-30, 0, 0);
+    box(40, 5, 20);
+    popMatrix();
+    pushMatrix();
+    rotateY(-flapAngle);
+    translate(30, 0, 0);
+    box(40, 5, 20);
+    popMatrix();
 
-    pushMatrix(); rotateY(flapAngle); translate(-30, 0, 0); box(40, 5, 20); popMatrix();
-    pushMatrix(); rotateY(-flapAngle); translate(30, 0, 0); box(40, 5, 20); popMatrix();
-    
     popMatrix();
   }
 
@@ -119,9 +132,9 @@ class Bird {
       if ((d > 0) && (d < desiredseparation)) {
         PVector diff = PVector.sub(position, other.position);
         diff.normalize();
-        diff.div(d);        
+        diff.div(d);
         steer.add(diff);
-        count++;            
+        count++;
       }
     }
     if (count > 0) {
@@ -163,18 +176,18 @@ class Bird {
   // --- COHESION (3D Native) ---
   PVector cohesion(ArrayList<Bird> birds) {
     float neighbordist = 70;
-    PVector sum = new PVector(0, 0, 0);   
+    PVector sum = new PVector(0, 0, 0);
     int count = 0;
     for (Bird other : birds) {
       float d = PVector.dist(position, other.position);
       if ((d > 0) && (d < neighbordist)) {
-        sum.add(other.position); 
+        sum.add(other.position);
         count++;
       }
     }
     if (count > 0) {
       sum.div(count);
-      return seek(sum);  
+      return seek(sum);
     } else {
       return new PVector(0, 0, 0);
     }

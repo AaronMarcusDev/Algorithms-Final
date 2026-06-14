@@ -9,9 +9,6 @@ class Rock {
     throwSpeed = _throwSpeed;
     pos = startPos.copy(); // So that the pointer does not point to the original PVector
     //                        as we need to keep the starting point the same
-
-    // Add a correction on the target position, without it the rock goes too low
-    // targetPos.div(1.5);
     
     // Calculate the direction vector from start to target
     PVector direction = PVector.sub(targetPos, startPos);
