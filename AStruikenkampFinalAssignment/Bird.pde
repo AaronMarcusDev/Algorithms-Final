@@ -27,7 +27,7 @@ class Bird {
     acceleration.add(force);
   }
 
-  // Shiffmans Flocking methods adapted to 3D
+  // Shiffman's Flocking methods adapted to 3D
   // ^-- https://processing.org/examples/flocking.html
   void flock(ArrayList<Bird> birds) {
     PVector sep = separate(birds);

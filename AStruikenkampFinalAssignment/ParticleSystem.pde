@@ -14,7 +14,7 @@ class ParticleSystem {
       );
     }
 
-    // Achteruit loopen bij verwijderen
+    // Loop backwards for removing
     for (int i = particles.size() - 1; i >= 0; i--) {
       Particle3D p = particles.get(i); // https://processing.org/reference/ArrayList.html
       p.update();

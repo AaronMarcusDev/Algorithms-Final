@@ -4,6 +4,11 @@ Submission for the course Algorithms for Creative Technology by Aaron.
 <img src="./images/curr.png" width="400"></img>
 <img src="./images/menu.png" width="400"></img>
 
+### Short description:
+> This is an interactive 3D game where birds flock together. The player can interact with the flock by *throwing rocks* at the birds or *spawning new birds* into the environment. The terrain beneath the birds is generated using Perlin noise and can be regenerated with different height settings through an *in-game menu*.
+
+*Long desciption:* [View PDF](./docs/3D%20Flocking%20Bird%20Game.pdf)
+
 ### General Information
  - Author: **Aaron Struikenkamp s3731944**
  - Course: Algorithms CreaTe 2025/2026
@@ -53,10 +58,9 @@ Submission for the course Algorithms for Creative Technology by Aaron.
 Not much I guess.
 
 ### Check for final assignment / rubric
-- [ ] Noise
-- - [ ] Perlin noise --> Terrain
-- - [ ] Gaussian noise
-
-- [ ] PVector Physics
-- [ ] Flocking --> 3D adapted bird flocking
-- [ ] Particle System
+- [x] Noise
+- - [x] Perlin noise --> Terrain
+- - [x] Gaussian noise --> Bird spawning
+- [x] PVector Physics
+- [x] Flocking --> 3D adapted bird flocking
+- [x] Particle System

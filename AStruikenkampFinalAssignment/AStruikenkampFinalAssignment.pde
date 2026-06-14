@@ -16,6 +16,7 @@
  * - https://processing.org/reference/ArrayList.html (ArrayList)
  * - https://processing.org/reference/blendMode_.html (blending colours for particles)
  * - https://processing.org/tutorials/2darray (2D Array for terrain grid)
+ * - https://forum.processing.org/one/topic/create-a-rectangular-gradient-two-colours.html (background insp.)
 */
 
 // Class definitions
@@ -40,7 +41,7 @@ void setup() {
     Constants.TERRAIN_WIDTH,
     Constants.TERRAIN_HEIGHT,
     Constants.TERRAIN_GRID_SIZE
-    );
+  );
 
   bg = new BG();
   flock = new ArrayList<Bird>();
@@ -69,7 +70,7 @@ void spawnSampleBirds(int number) {
       colorset.getBirdColor(),
       Constants.BIRD_SIZE // bird size
       )
-      );
+    );
   }
 }
 
@@ -113,9 +114,9 @@ void draw() {
     // Check rock against all birds to get 'hitbox' --> Just a distance vector in my case
     for (int j = flock.size() - 1; j >= 0; j--) {
       Bird b = flock.get(j);
-      float distance = PVector.dist(r.pos, b.position); // Note: Ensure your Bird class uses b.position or b.pos
+      float distance = PVector.dist(r.pos, b.position);
 
-      // Rock radius (~15) and Bird radius (~20) = 35 pixels apart means they touched!
+      // if the distance is smaller than the 'hitbox', it means they touched
       if (distance < Constants.COLLISION_DISTANCE) {
         timerStart = millis();
         ps.clear();

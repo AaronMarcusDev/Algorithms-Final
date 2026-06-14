@@ -45,13 +45,6 @@ class Particle3D {
 
     // Solid fill color to prevent 3D rendering alpha clipping bugs
     fill(red(c), green(c), blue(c));
-
-    // rendering using matrix translation
-    // pushMatrix();
-    // translate(pos.x, pos.y, pos.z); // Move to the particle's active 3D coordinates
-    // sphere(currentSize);             // Draw a real 3D sphere shape
-    // popMatrix();
-
     particleSphere.render(pos, currentSize);
   }
 

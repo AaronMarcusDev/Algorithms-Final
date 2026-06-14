@@ -52,7 +52,7 @@ class Terrain {
       beginShape(TRIANGLE_STRIP);
       noStroke();
       for (int x = 0; x < cols; x++) {
-        // Kleur bepalen op basis van de opgeslagen hoogte
+        // Change colour based on height mapping, so it has depth!
         float greenValue = map(mesh[x][y], -100, 150, 80, 200);
         fill(34, greenValue, 34); 
         
